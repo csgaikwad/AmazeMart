@@ -1,0 +1,142 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Product {
+  id           String   @id @default(uuid())
+  title        String
+  description  String
+  price        Float
+  rating       Float
+  totalReviews Int
+  createdAt    DateTime @default(now())
+
+  images     Image[]
+  reviews    Review[]
+  categories CategoryOnProduct[]
+  wishlist   Wishlist[]
+  cart       Cart[]
+  orderItems OrderItem[]
+}
+
+model Image {
+  id        String   @id @default(uuid())
+  productId String
+  imageUrl  String
+  createdAt DateTime @default(now())
+  product   Product  @relation(fields: [productId], references: [id])
+}
+
+model Review {
+  id        String   @id @default(uuid())
+  userId    String
+  productId String
+  stars     Int
+  comment   String
+  createdAt DateTime @default(now())
+
+  product Product @relation(fields: [productId], references: [id])
+  user    User    @relation(fields: [userId], references: [id])
+}
+
+model User {
+  id         String  @id @default(uuid())
+  email      String  @unique
+  password   String
+  name       String
+  pictureUrl String?
+  role       String
+
+  wishlist Wishlist[]
+  cart     Cart[]
+  orders   Order[]
+  reviews  Review[]
+}
+
+model Wishlist {
+  id        String   @id @default(uuid())
+  userId    String
+  productId String
+  createdAt DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
+
+  @@unique([userId, productId]) // Ensures a user can't wishlist the same product more than once
+}
+
+model Cart {
+  id         String   @id @default(uuid())
+  userId     String
+  productId  String
+  title      String
+  price      Float
+  productImg String
+  createdAt  DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
+}
+
+model Order {
+  id            String    @id @default(uuid())
+  userId        String
+  email         String
+  phoneNo       String
+  address       String
+  city          String
+  state         String
+  country       String
+  pincode       String
+  itemsPrice    Float
+  taxPrice      Float
+  shippingPrice Float
+  totalPrice    Float
+  paymentId     String
+  paymentStatus String
+  paidAt        DateTime?
+  orderStatus   String
+  deliveredAt   DateTime?
+  createdAt     DateTime  @default(now())
+
+  user       User        @relation(fields: [userId], references: [id])
+  orderItems OrderItem[]
+}
+
+model OrderItem {
+  id        String   @id @default(uuid())
+  orderId   String
+  productId String
+  title     String
+  price     Float
+  quantity  Int
+  image     String
+  createdAt DateTime @default(now())
+
+  order   Order   @relation(fields: [orderId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
+}
+
+model Category {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  createdAt DateTime @default(now())
+
+  products CategoryOnProduct[]
+}
+
+model CategoryOnProduct {
+  productId  String
+  categoryId String
+
+  product  Product  @relation(fields: [productId], references: [id])
+  category Category @relation(fields: [categoryId], references: [id])
+
+  @@id([productId, categoryId])
+}
