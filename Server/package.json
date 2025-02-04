@@ -2,7 +2,7 @@
   "name": "amazemart",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "./dist/index.js",
   "scripts": {
     "start": "ts-node src/index.ts",
     "dev": "nodemon --exec ts-node src/index.ts",
@@ -12,9 +12,14 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/cookie-parser": "^1.4.8",
+    "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
+    "@types/jsonwebtoken": "^9.0.8",
     "@types/node": "^22.13.0",
     "express": "^5.0.1",
+    "nodemon": "^3.1.9",
     "prisma": "^6.3.0",
     "ts-node": "^10.9.2",
     "tsx": "^4.19.2",
@@ -22,7 +27,13 @@
   },
   "dependencies": {
     "@prisma/client": "^6.3.0",
+    "bcrypt": "^5.1.1",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.7",
-    "psql": "^0.0.1"
+    "http-errors": "^2.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "psql": "^0.0.1",
+    "zod": "^3.24.1"
   }
 }
