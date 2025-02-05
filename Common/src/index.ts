@@ -35,3 +35,23 @@ export const productInput = z.object({
 });
 
 export type ProductInputTypes = z.infer<typeof productInput>;
+
+export const orderInput = z.object({
+  userId: z.string().uuid(),
+  email: z.string().email(),
+  phoneNo: z.string().min(10).max(15),
+  address: z.string().min(5),
+  city: z.string().min(2),
+  state: z.string().min(2),
+  country: z.string().min(2),
+  pincode: z.string().min(4),
+  itemsPrice: z.number().positive(),
+  taxPrice: z.number().positive(),
+  shippingPrice: z.number().positive(),
+  totalPrice: z.number().positive(),
+  paymentId: z.string().min(1),
+  paymentStatus: z.string().min(1),
+  orderStatus: z.string().optional(),
+});
+
+export type OrderInputTypes = z.infer<typeof orderInput>;
