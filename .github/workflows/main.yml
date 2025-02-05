@@ -18,16 +18,14 @@ jobs:
           node-version: 18
           registry-url: https://registry.npmjs.org/
 
-      - name: Change to Common directory
-        run: cd Common 
-
-
       - name: Install dependencies and build
         run: |
           npm install
           npm run build
+        working-directory: ./Common  # Run commands in the Common folder
 
       - name: Publish to npm
         run: npm publish --access public
+        working-directory: ./Common  # Publish from the Common folder
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
