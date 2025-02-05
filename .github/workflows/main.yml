@@ -18,6 +18,10 @@ jobs:
           node-version: 18
           registry-url: https://registry.npmjs.org/
 
+      - name: Change to Common directory
+        run: cd AmazeMart/Common 
+
+
       - name: Install dependencies and build
         run: |
           npm install
