@@ -26,12 +26,11 @@ export const updateUserInput = z.object({
 
 export type UpdateUserInputTypes = z.infer<typeof updateUserInput>;
 
-
 export const productInput = z.object({
   title: z.string(),
   description: z.string().min(6),
   price: z.number(),
-  productImgUrls: z.array(z.string()).optional(),
+  productImgUrls: z.array(z.string()).min(1),
 });
 
 export type ProductInputTypes = z.infer<typeof productInput>;
@@ -52,6 +51,37 @@ export const orderInput = z.object({
   paymentId: z.string().min(1),
   paymentStatus: z.string().min(1),
   orderStatus: z.string().optional(),
+  paidAt: z.date().optional(),
+  deliveredAt: z.date().optional(),
 });
 
 export type OrderInputTypes = z.infer<typeof orderInput>;
+
+export const reviewInput = z.object({
+  userId: z.string().uuid(),
+  productId: z.string().uuid(),
+  stars: z.number().min(1).max(5),
+  comment: z.string().min(3),
+});
+
+export type ReviewInputTypes = z.infer<typeof reviewInput>;
+
+export const cartInput = z.object({
+  userId: z.string().uuid(),
+  productId: z.string().uuid(),
+});
+
+export type CartInputTypes = z.infer<typeof cartInput>;
+
+export const wishlistInput = z.object({
+  userId: z.string().uuid(),
+  productId: z.string().uuid(),
+});
+
+export type WishlistInputTypes = z.infer<typeof wishlistInput>;
+
+export const categoryInput = z.object({
+  name: z.string().min(2),
+});
+
+export type CategoryInputTypes = z.infer<typeof categoryInput>;

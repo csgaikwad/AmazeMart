@@ -41,3 +41,16 @@ export const getAllOrders: RequestHandler = async (req, res) => {
   const orders = await prisma.order.findMany();
   res.json({ orders });
 };
+
+/* Update order status */
+export const updateOrderStatus: RequestHandler = async (req, res, next) => {
+  const { orderStatus } = req.body;
+  const id = req.params.id;
+
+  const order = await prisma.order.update({
+    where: { id },
+    data: { orderStatus },
+  });
+
+  res.json({ order });
+};

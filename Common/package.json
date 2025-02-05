@@ -1,6 +1,6 @@
 {
   "name": "@ssg_csg/amazemart_common",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Folder containing zod types and validation for AmazeMart",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
