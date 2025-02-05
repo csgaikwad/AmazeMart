@@ -25,11 +25,8 @@ export const errorHandler = (error: unknown, req: Request, res: Response, next: 
 };
 
 
-// Async error handle
 export const asyncHandler =
-  (fn: (req: Request, res: Response, next: NextFunction) => Promise<void>) =>
+  (fn: (req: Request, res: Response, next: NextFunction) => void | Promise<void>) =>
   (req: Request, res: Response, next: NextFunction) => {
     Promise.resolve(fn(req, res, next)).catch(next);
   };
-
-

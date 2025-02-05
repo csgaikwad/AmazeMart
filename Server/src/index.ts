@@ -27,7 +27,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // Routes
-app.get("/api/test", (req: Request, res: Response) => {
+
+// To check if the server is working or not
+app.get("/api/v1", (req: Request, res: Response) => {
   res.json({ message: "Welcome to the API!" });
 });
 
@@ -36,7 +38,7 @@ app.use("/api/v1/products", productRoutes);
 app.use("/api/v1/orders", orderRoutes);
 
 // 404 and global error handling
-app.use("*", notFoundHandler);
+app.use(notFoundHandler);
 app.use(errorHandler);
 
 const server = app.listen(PORT, () => {

@@ -13,8 +13,8 @@ model Product {
   title        String
   description  String
   price        Float
-  rating       Float
-  totalReviews Int
+  rating       Float   @default(0.0)
+  totalReviews Int     @default(0)
   createdAt    DateTime @default(now())
 
   images     Image[]
@@ -30,7 +30,8 @@ model Image {
   productId String
   imageUrl  String
   createdAt DateTime @default(now())
-  product   Product  @relation(fields: [productId], references: [id])
+
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
 }
 
 model Review {
@@ -41,17 +42,22 @@ model Review {
   comment   String
   createdAt DateTime @default(now())
 
-  product Product @relation(fields: [productId], references: [id])
-  user    User    @relation(fields: [userId], references: [id])
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+enum Role {
+  USER
+  ADMIN
+}
 model User {
   id         String  @id @default(uuid())
   email      String  @unique
   password   String
   name       String
   pictureUrl String?
-  role       String
+  role  Role   @default(USER)
+  createdAt  DateTime @default(now())
 
   wishlist Wishlist[]
   cart     Cart[]
@@ -65,23 +71,22 @@ model Wishlist {
   productId String
   createdAt DateTime @default(now())
 
-  user    User    @relation(fields: [userId], references: [id])
-  product Product @relation(fields: [productId], references: [id])
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
-  @@unique([userId, productId]) // Ensures a user can't wishlist the same product more than once
+  @@unique([userId, productId]) // Prevents duplicate wishlist entries
 }
 
 model Cart {
-  id         String   @id @default(uuid())
-  userId     String
-  productId  String
-  title      String
-  price      Float
-  productImg String
-  createdAt  DateTime @default(now())
+  id        String   @id @default(uuid())
+  userId    String
+  productId String
+  createdAt DateTime @default(now())
 
-  user    User    @relation(fields: [userId], references: [id])
-  product Product @relation(fields: [productId], references: [id])
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, productId]) // Prevents duplicate cart entries
 }
 
 model Order {
@@ -101,11 +106,11 @@ model Order {
   paymentId     String
   paymentStatus String
   paidAt        DateTime?
-  orderStatus   String
+  orderStatus   String  @default("Pending")
   deliveredAt   DateTime?
   createdAt     DateTime  @default(now())
 
-  user       User        @relation(fields: [userId], references: [id])
+  user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   orderItems OrderItem[]
 }
 
@@ -113,14 +118,11 @@ model OrderItem {
   id        String   @id @default(uuid())
   orderId   String
   productId String
-  title     String
-  price     Float
   quantity  Int
-  image     String
   createdAt DateTime @default(now())
 
-  order   Order   @relation(fields: [orderId], references: [id])
-  product Product @relation(fields: [productId], references: [id])
+  order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 }
 
 model Category {
@@ -135,8 +137,8 @@ model CategoryOnProduct {
   productId  String
   categoryId String
 
-  product  Product  @relation(fields: [productId], references: [id])
-  category Category @relation(fields: [categoryId], references: [id])
+  product  Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 
-  @@id([productId, categoryId])
+  @@id([productId, categoryId]) // Composite key for many-to-many relation
 }
