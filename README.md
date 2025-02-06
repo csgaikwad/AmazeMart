@@ -48,3 +48,61 @@ export default tseslint.config({
   },
 })
 ```
+
+
+src/
+│
+├── assets/                  # Static files (images, fonts, etc.)
+│   └── images/
+│
+├── components/              # Reusable UI components
+│   ├── common/              # Generic components (buttons, inputs, etc.)
+│   ├── layout/              # Layout components (Navbar, Footer, Sidebar)
+│   └── product/             # Product-specific components (ProductCard, ProductList)
+│
+├── features/                # Feature-based folder structure
+│   ├── auth/                # Authentication (login, register)
+│   ├── cart/                # Shopping cart functionality
+│   ├── orders/              # Order management
+│   ├── products/            # Product-related logic
+│   ├── reviews/             # Review handling
+│   └── wishlist/            # Wishlist functionality
+│
+├── hooks/                   # Custom React hooks
+│
+├── pages/                   # Page components for routing
+│   ├── Home.tsx
+│   ├── ProductDetails.tsx
+│   ├── Cart.tsx
+│   ├── Orders.tsx
+│   ├── Wishlist.tsx
+│   ├── Login.tsx
+│   └── Register.tsx
+│
+├── routes/                  # Route configurations
+│   └── AppRoutes.tsx
+│
+├── services/                # API calls and service logic (Axios instances)
+│   ├── api.ts               # Axios setup
+│   ├── authService.ts
+│   ├── productService.ts
+│   └── cartService.ts
+│
+├── store/                   # Global state management (Redux/Context)
+│   ├── index.ts             # Store setup
+│   ├── authSlice.ts
+│   ├── cartSlice.ts
+│   └── productSlice.ts
+│
+├── styles/                  # Tailwind and global CSS files
+│   └── globals.css
+│
+├── types/                   # TypeScript types and interfaces
+│   └── index.d.ts
+│
+├── utils/                   # Utility functions and helpers
+│   └── formatDate.ts
+│
+├── App.tsx                  # Main React component
+├── main.tsx                 # Entry point
+└── index.html               # HTML template
