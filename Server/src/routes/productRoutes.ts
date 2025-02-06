@@ -1,12 +1,18 @@
-import express, { Request, Response } from "express";
+import express from "express";
+import { asyncHandler } from "../middlewares/errorMiddleware";
 import {
-    createProduct,
+  createProduct,
   deleteProduct,
   getAllProducts,
   getProduct,
   updateProduct,
+  createCategory,
+  getAllCategories,
+  updateCategory,
+  deleteCategory,
 } from "../controllers/productController";
-import { asyncHandler } from "../middlewares/errorMiddleware";
+import { isAdmin, isAuthenticated } from "../middlewares/authMiddleware";
+import { isatty } from "tty";
 
 const router = express.Router();
 
@@ -15,9 +21,19 @@ router.get("/", asyncHandler(getAllProducts));
 router
   .route("/:id")
   .get(asyncHandler(getProduct))
-  .put(asyncHandler(updateProduct))
-  .delete(asyncHandler(deleteProduct));
+  .put(isAuthenticated, isAdmin, asyncHandler(updateProduct))
+  .delete(isAuthenticated, isAdmin, asyncHandler(deleteProduct));
 
-router.post("/", asyncHandler(createProduct));
+router.post("/", isAuthenticated, isAdmin, asyncHandler(createProduct));
+
+router
+  .route("/category")
+  .get(asyncHandler(getAllCategories))
+  .post(isAuthenticated, isAdmin, asyncHandler(createCategory));
+
+router
+  .route("/category/:id")
+  .patch(isAuthenticated, isAdmin, asyncHandler(updateCategory))
+  .delete(isAuthenticated, isAdmin, asyncHandler(deleteCategory));
 
 export default router;

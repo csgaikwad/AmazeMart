@@ -1,6 +1,9 @@
 import { RequestHandler } from "express";
+import AppError from "../utils/AppError";
+import { PrismaClient } from "@prisma/client";
 import { reviewInput } from "@ssg_csg/amazemart_common";
 
+const prisma = new PrismaClient();
 /* Create a review */
 export const createReview: RequestHandler = async (req, res, next) => {
   const parsed = reviewInput.safeParse(req.body);

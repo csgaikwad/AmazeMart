@@ -9,16 +9,17 @@ import {
   updateUser,
 } from "../controllers/userController";
 import { asyncHandler } from "../middlewares/errorMiddleware";
+import { isAdmin, isAuthenticated } from "../middlewares/authMiddleware";
 
 const router = express.Router();
 
-router.get("/", asyncHandler(getAllUsers));
+router.get("/", isAuthenticated, isAdmin, asyncHandler(getAllUsers));
 
 router
   .route("/:id")
-  .get(asyncHandler(getUser))
-  .put(asyncHandler(updateUser))
-  .delete(deleteUser);
+  .get(isAuthenticated, asyncHandler(getUser))
+  .patch(isAuthenticated, asyncHandler(updateUser))
+  .delete(isAuthenticated, deleteUser);
 
 router.post("/register", asyncHandler(registerUser));
 

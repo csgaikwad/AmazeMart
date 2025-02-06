@@ -1,5 +1,9 @@
 import { RequestHandler } from "express";
+import AppError from "../utils/AppError";
+import { PrismaClient } from "@prisma/client";
 import { wishlistInput } from "@ssg_csg/amazemart_common";
+
+const prisma = new PrismaClient();
 
 /* Add item to wishlist */
 export const addToWishlist: RequestHandler = async (req, res, next) => {

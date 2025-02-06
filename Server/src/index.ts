@@ -7,6 +7,11 @@ import { errorHandler, notFoundHandler } from "./middlewares/errorMiddleware";
 import userRoutes from "./routes/userRoutes";
 import orderRoutes from "./routes/orderRoutes";
 import productRoutes from "./routes/productRoutes";
+import imageRoutes from "./routes/imageRoutes";
+import cartRoutes from "./routes/cartRoutes";
+import wishlistRoutes from "./routes/wishlistRoutes";
+import reviewRoutes from "./routes/reviewRoutes";
+import { isAdmin, isAuthenticated } from "./middlewares/authMiddleware";
 
 // Load environment variables
 dotenv.config();
@@ -33,9 +38,16 @@ app.get("/api/v1", (req: Request, res: Response) => {
   res.json({ message: "Welcome to the API!" });
 });
 
+// Public Routes (No Authentication Required)
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/products", productRoutes);
-app.use("/api/v1/orders", orderRoutes);
+
+// Protected Routes (Authenticated Users Only)
+app.use("/api/v1/cart", isAuthenticated, cartRoutes);
+app.use("/api/v1/wishlist", isAuthenticated, wishlistRoutes);
+app.use("/api/v1/review", isAuthenticated, reviewRoutes);
+app.use("/api/v1/image", isAuthenticated, imageRoutes);
+app.use("/api/v1/orders", isAuthenticated, orderRoutes);
 
 // 404 and global error handling
 app.use(notFoundHandler);

@@ -1,5 +1,9 @@
 import { RequestHandler } from "express";
+import AppError from "../utils/AppError";
+import { PrismaClient } from "@prisma/client";
 import { cartInput } from "@ssg_csg/amazemart_common";
+
+const prisma = new PrismaClient();
 
 /* Add item to cart */
 export const addToCart: RequestHandler = async (req, res, next) => {
