@@ -8,7 +8,7 @@ const prisma = new PrismaClient();
 /* Get All Products */
 
 export const getAllProducts: RequestHandler = async (req, res) => {
-  const products = await prisma.product.findMany();
+  const products = await prisma.product.findMany({ include: { images: true } });
   res.json(products);
 };
 
@@ -20,7 +20,10 @@ export const getProduct: RequestHandler = async (
   next
 ): Promise<void> => {
   const id = req.params.id;
-  const product = await prisma.product.findUnique({ where: { id } });
+  const product = await prisma.product.findUnique({
+    where: { id },
+    include: { images: true },
+  });
 
   if (!product) {
     return next(new AppError("Product not found", 404));
@@ -48,6 +51,7 @@ export const updateProduct: RequestHandler = async (
   const product = await prisma.product.update({
     where: { id },
     data: parsedData.data, // Only allowed fields will be here
+    include: { images: true },
   });
 
   res.json({ product });
@@ -69,13 +73,22 @@ export const createProduct: RequestHandler = async (req, res, next) => {
   if (!parsedData.success) {
     return next(new AppError("Invalid product input", 400));
   }
-  const product = await prisma.product.create({ data: parsedData.data });
+  const { productImgUrls, ...productData } = parsedData.data;
+
+  const product = await prisma.product.create({
+    data: {
+      ...productData,
+      images: {
+        create: productImgUrls?.map((imageUrl: string) => ({ imageUrl })) || [],
+      },
+    },
+    include: { images: true },
+  });
+
   res.status(201).json({ product });
 };
 
-
 /* Category controller */
-
 
 /* Create a category */
 export const createCategory: RequestHandler = async (req, res, next) => {

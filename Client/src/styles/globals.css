@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
 .APP {
-  @apply flex flex-col justify-center items-center;
+  @apply flex flex-col pt-20 items-center;
+}
+.showBorder > nth {
+  @apply border-2 border-b-blue-800 border-dashed;
 }

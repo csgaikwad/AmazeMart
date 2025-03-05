@@ -4,7 +4,7 @@ export const registerInput = z.object({
   email: z.string().email(),
   password: z.string().min(6),
   name: z.string().min(3),
-  userImgUrl: z.string().optional(),
+  userImgUrl: z.string().url().optional(),
 });
 
 export type RegisterInputTypes = z.infer<typeof registerInput>;
@@ -20,17 +20,17 @@ export type SigninInputTypes = z.infer<typeof signinInput>;
 
 export const updateUserInput = z.object({
   name: z.string().min(3),
-  pictureUrl: z.string().optional(),
+  pictureUrl: z.string().url().optional(),
   role: z.enum(["USER", "ADMIN"]),
 });
 
 export type UpdateUserInputTypes = z.infer<typeof updateUserInput>;
 
 export const productInput = z.object({
-  title: z.string(),
+  title: z.string().min(1),
   description: z.string().min(6),
   price: z.number(),
-  productImgUrls: z.array(z.string()).min(1),
+  productImgUrls: z.array(z.string().url()).min(1),
 });
 
 export type ProductInputTypes = z.infer<typeof productInput>;
@@ -43,7 +43,7 @@ export const orderInput = z.object({
   city: z.string().min(2),
   state: z.string().min(2),
   country: z.string().min(2),
-  pincode: z.string().min(4),
+  pincode: z.string().min(4).max(10),
   itemsPrice: z.number().positive(),
   taxPrice: z.number().positive(),
   shippingPrice: z.number().positive(),

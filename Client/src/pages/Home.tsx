@@ -16,10 +16,12 @@ export default function Home() {
     }
     fetchProperties();
   }, []);
+  console.log(productList);
 
   return (
     <div className="bg-amber-50">
       Home
+      <div>Banner</div>
       <div className="flex flex-col justify-center items-center">
         {productList.map((product, index) => (
           <div key={index}>
