@@ -1,14 +1,22 @@
 import { RequestHandler } from "express";
-import { PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient } from "@prisma/client";
 import AppError from "../utils/AppError";
 import { categoryInput, productInput } from "@ssg_csg/amazemart_common";
+import ApiFeatures from "../utils/ApiFeature";
 
 const prisma = new PrismaClient();
 
 /* Get All Products */
 
 export const getAllProducts: RequestHandler = async (req, res) => {
-  const products = await prisma.product.findMany({ include: { images: true } });
+  let query: Prisma.ProductFindManyArgs = { include: { images: true } };
+
+  const apiFeature = new ApiFeatures(query, req.query)
+    .search()
+    .filter()
+    .pagination(2);
+
+  const products = await prisma.product.findMany(apiFeature.query);
   res.json(products);
 };
 

@@ -85,3 +85,24 @@ export const categoryInput = z.object({
 });
 
 export type CategoryInputTypes = z.infer<typeof categoryInput>;
+
+// Fixed QueryParams Schema
+export const queryParamsSchema = z.object({
+  keyword: z.string().optional(),
+  price: z
+    .object({
+      gte: z.number().optional(),
+      lte: z.number().optional(),
+    })
+    .optional(),
+  rating: z
+    .object({
+      gte: z.number().optional(),
+      lte: z.number().optional(),
+    })
+    .optional(),
+  page: z.string().optional(),
+  limit: z.string().optional(),
+});
+
+export type QueryParamsTypes = z.infer<typeof queryParamsSchema>;
